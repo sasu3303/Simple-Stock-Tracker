@@ -1,3 +1,25 @@
+// PEER REVIEW — Sanjay Sundar BV (CS 5610)
+//
+// Suggestion 1: Add color coding to Gain/Loss so users can instantly
+// see positive vs negative performance without reading the number.
+// Example fix — add this inside the forEach where the card HTML is built:
+//   const gainLossColor = holding.gainLoss >= 0 ? '#16a34a' : '#dc2626';
+//   Then in the HTML: style="color: ${gainLossColor}"
+//   on the Gain/Loss paragraph.
+//
+// Suggestion 2: The window.location.reload() after removing a holding
+// causes a full page refresh including re-fetching the chart data.
+// A smoother approach would be to just remove the card from the DOM
+// and update the chart without a full reload.
+// Example fix:
+//   cardColumn.remove(); // instead of window.location.reload()
+//
+// Suggestion 3: If the fetch fails silently (e.g. network timeout),
+// the user only sees "Unable to load holdings." with no retry option.
+// Consider adding a retry button:
+//   cardContainer.innerHTML =
+//     '<p>Unable to load holdings. <button onclick="loadHoldingCards()">Retry</button></p>';
+
 import { getAllHoldings, removeHolding } from "./api.js";
 
 const cardContainer = document.getElementById("holdings-card-container");
