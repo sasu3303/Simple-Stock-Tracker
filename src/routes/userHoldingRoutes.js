@@ -1,3 +1,25 @@
+// PEER REVIEW — Sanjay Sundar BV (CS 5610)
+//
+// Suggestion 1: The GET /all route fetches historical prices for every
+// holding on every single dashboard load with no caching at the route level.
+// If a user has 10 holdings and refreshes 5 times, that's 50 external API calls.
+// Consider adding a simple in-memory cache with a 5-minute TTL:
+//   const cache = new Map();
+//   const CACHE_TTL = 5 * 60 * 1000;
+//   const cached = cache.get(userId);
+//   if (cached && Date.now() - cached.ts < CACHE_TTL) return res.json(cached.data);
+//
+// Suggestion 2: If getHistoricalPrices() throws for one holding,
+// Promise.all() rejects the entire request and the user sees a 500 error
+// even though other holdings are valid. Consider wrapping each call:
+//   const prices = await getHistoricalPrices(...).catch(() => []);
+//
+// Suggestion 3: The DELETE /remove route accepts holdingId in req.body.
+// REST convention for DELETE requests is to use req.params instead:
+//   router.delete('/remove/:holdingId', requireAuth, async (req, res) => {
+//     const { holdingId } = req.params;
+//   This makes the route more RESTful and easier to test.
+
 import express from "express";
 import { requireAuth } from "../middleware/authMiddleware.js";
 import { addHolding, removeHolding, getAllHoldings } from "../modules/users.js";
